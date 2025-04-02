@@ -17,5 +17,8 @@ class Repair(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Technician handling the repair
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return f"{self.laptop_model} - {self.status}"
