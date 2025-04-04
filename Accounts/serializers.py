@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import CustomUser
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -10,6 +11,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return CustomUser.objects.create_user(**validated_data)
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -22,18 +24,17 @@ class LoginSerializer(serializers.Serializer):
         return {"user": user}
 
 
-
 class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'password']
+        fields = ["username", "password"]
 
     def create(self, validated_data):
         user = CustomUser.objects.create_user(**validated_data)
         return user
 
     def validate(self, attrs):
-        user = CustomUser.objects.filter(username=attrs['username']).first()
-        if user and user.check_password(attrs['password']):
+        user = CustomUser.objects.filter(username=attrs["username"]).first()
+        if user and user.check_password(attrs["password"]):
             return user
         raise serializers.ValidationError("Invalid username or password")

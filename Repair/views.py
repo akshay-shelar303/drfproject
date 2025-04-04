@@ -12,7 +12,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class RepairList(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         repairs = Repair.objects.all()
         paginator = PageNumberPagination()
@@ -26,7 +26,7 @@ class RepairList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class RepairUpdateDetail(APIView):
     authentication_classes = [JWTAuthentication]
@@ -44,7 +44,7 @@ class RepairUpdateDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, pk):
         repair = Repair.objects.get(id=pk)
         repair.delete()
