@@ -1,13 +1,14 @@
 from rest_framework.response import Response
 from .models import CustomUser
 from .serializers import RegisterSerializer, LoginSerializer
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authentication import authenticate
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 @csrf_exempt
@@ -42,7 +43,6 @@ def user_login(request):
     login(request, user)
    
     refresh = RefreshToken.for_user(user)
-    print("refresh", refresh)
     return Response({
         "email": user.email,
         "access": str(refresh.access_token),
@@ -52,6 +52,7 @@ def user_login(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 def user_logout(request):
     """Logout user and blacklist the refresh token."""
     try:

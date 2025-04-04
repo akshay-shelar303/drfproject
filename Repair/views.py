@@ -5,9 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class RepairList(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         repairs = Repair.objects.all()
         paginator = PageNumberPagination()
@@ -24,6 +29,9 @@ class RepairList(APIView):
     
 
 class RepairUpdateDetail(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, pk):
         repair = Repair.objects.get(id=pk)
         serializer = RepairSerializer(repair)
