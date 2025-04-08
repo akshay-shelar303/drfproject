@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from .models import CustomUser
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer
 from rest_framework.decorators import (
     api_view,
     permission_classes,
