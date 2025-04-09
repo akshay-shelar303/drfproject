@@ -33,12 +33,20 @@ class RepairUpdateDetail(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        repair = Repair.objects.get(id=pk)
+        try:
+            repair = Repair.objects.get(id=pk)
+        except Repair.DoesNotExist as e:
+            return Response({"details":str(e)}, status=status.HTTP_404_NOT_FOUND)
+        
         serializer = RepairSerializer(repair)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
-        repair = Repair.objects.get(id=pk)
+        try:
+            repair = Repair.objects.get(id=pk)
+        except Repair.DoesNotExist as e:
+            return Response({"details":str(e)},status=status.HTTP_404_NOT_FOUND)
+        
         serializer = RepairSerializer(repair, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -46,6 +54,10 @@ class RepairUpdateDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        repair = Repair.objects.get(id=pk)
+        try:
+            repair = Repair.objects.get(id=pk)
+        except Repair.DoesNotExist as e:
+            return Response({"details":str(e)},status=status.HTTP_404_NOT_FOUND)
+        
         repair.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
