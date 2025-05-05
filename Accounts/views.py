@@ -22,7 +22,7 @@ class UserRegistration(APIView):
 
 
 class UserList(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         users = CustomUser.objects.all()
